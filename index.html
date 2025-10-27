@@ -196,10 +196,6 @@
             gap: 10px;
         }
 
-        .section-title i {
-            color: var(--accent-orange);
-        }
-
         .workout-form {
             display: grid;
             grid-template-columns: 1fr 2fr auto;
@@ -250,10 +246,6 @@
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
-        }
-
-        .btn:active {
-            transform: translateY(0);
         }
 
         .workout-list {
@@ -315,12 +307,6 @@
             text-align: center;
             padding: 40px 20px;
             color: var(--text-muted);
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 16px;
-            opacity: 0.5;
         }
 
         footer {
@@ -437,7 +423,6 @@
             </div>
             
             <div class="workout-list" id="workout-list">
-                <!-- Les exercices ajoutés apparaîtront ici -->
                 <div class="empty-state" id="empty-state">
                     <div>📝</div>
                     <div>Aucune séance planifiée</div>
@@ -452,10 +437,8 @@
     </div>
 
     <script>
-        // Données initiales pour les graphiques
         const hours = Array.from({length: 24}, (_, i) => `${i}h`);
         
-        // Données de production solaire (simulées)
         const productionData = {
             labels: hours,
             datasets: [{
@@ -469,7 +452,6 @@
             }]
         };
         
-        // Données de consommation (simulées)
         const consumptionData = {
             labels: hours,
             datasets: [{
@@ -482,7 +464,6 @@
             }]
         };
         
-        // Données de batterie (simulées)
         const batteryData = {
             labels: hours,
             datasets: [{
@@ -496,7 +477,6 @@
             }]
         };
         
-        // Options communes pour les graphiques
         const chartOptions = {
             responsive: true,
             maintainAspectRatio: false,
@@ -541,9 +521,7 @@
             }
         };
         
-        // Initialisation des graphiques
         document.addEventListener('DOMContentLoaded', function() {
-            // Graphique de production
             const productionCtx = document.getElementById('production-chart').getContext('2d');
             new Chart(productionCtx, {
                 type: 'line',
@@ -551,7 +529,6 @@
                 options: chartOptions
             });
             
-            // Graphique de consommation
             const consumptionCtx = document.getElementById('consumption-chart').getContext('2d');
             new Chart(consumptionCtx, {
                 type: 'bar',
@@ -559,7 +536,6 @@
                 options: chartOptions
             });
             
-            // Graphique de batterie
             const batteryCtx = document.getElementById('battery-chart').getContext('2d');
             new Chart(batteryCtx, {
                 type: 'line',
@@ -567,17 +543,14 @@
                 options: chartOptions
             });
             
-            // Gestion des séances d'entraînement
             const workoutList = document.getElementById('workout-list');
             const emptyState = document.getElementById('empty-state');
             const daySelect = document.getElementById('day-select');
             const exerciseInput = document.getElementById('exercise-input');
             const addExerciseBtn = document.getElementById('add-exercise');
             
-            // Charger les séances depuis le localStorage
             let workouts = JSON.parse(localStorage.getItem('solarImpulseWorkouts')) || [];
             
-            // Afficher les séances
             function renderWorkouts() {
                 if (workouts.length === 0) {
                     emptyState.style.display = 'block';
@@ -600,7 +573,6 @@
                     workoutList.appendChild(workoutItem);
                 });
                 
-                // Ajouter les événements de suppression
                 document.querySelectorAll('.delete-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const index = parseInt(this.getAttribute('data-index'));
@@ -609,7 +581,6 @@
                 });
             }
             
-            // Ajouter une séance
             function addWorkout() {
                 const day = daySelect.value;
                 const exercise = exerciseInput.value.trim();
@@ -625,14 +596,12 @@
                 renderWorkouts();
             }
             
-            // Supprimer une séance
             function deleteWorkout(index) {
                 workouts.splice(index, 1);
                 localStorage.setItem('solarImpulseWorkouts', JSON.stringify(workouts));
                 renderWorkouts();
             }
             
-            // Événements
             addExerciseBtn.addEventListener('click', addWorkout);
             exerciseInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
@@ -640,16 +609,13 @@
                 }
             });
             
-            // Initialiser l'affichage des séances
             renderWorkouts();
             
-            // Mettre à jour les valeurs en temps réel (simulation)
             function updateValues() {
                 const productionValue = document.getElementById('production-value');
                 const consumptionValue = document.getElementById('consumption-value');
                 const batteryValue = document.getElementById('battery-value');
                 
-                // Simulation de variations aléatoires
                 const production = (4.2 + (Math.random() * 0.4 - 0.2)).toFixed(1);
                 const consumption = (2.8 + (Math.random() * 0.3 - 0.15)).toFixed(1);
                 const battery = Math.min(100, Math.max(0, 78 + (Math.random() * 2 - 1)));
@@ -659,7 +625,6 @@
                 batteryValue.textContent = `${battery.toFixed(0)}%`;
             }
             
-            // Mettre à jour toutes les 10 secondes
             setInterval(updateValues, 10000);
         });
     </script>
